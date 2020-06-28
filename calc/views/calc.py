@@ -17,7 +17,7 @@ def calc(request):
                 invested_amount = float(json_data['investedAmount'])
             cdb_rate = float(json_data['cdbRate'])
 
-            cdi_list = CDIHistory.objects.filter(cdi_date__range=(investment_date, current_date))
+            cdi_list = CDIHistory.objects.filter(cdi_date__range=(investment_date, current_date)).order_by('cdi_date')
 
             accumulated_cdi_tax = 1
             dict_index = 0
