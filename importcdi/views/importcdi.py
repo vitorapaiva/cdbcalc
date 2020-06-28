@@ -1,37 +1,37 @@
 # Create your views here.
-import codecs
-import csv
-import datetime
-from urllib.request import urlopen
 
+from django.core.exceptions import PermissionDenied
 from django.http import JsonResponse
 
 from importcdi.models import CDIHistory
+from importcdi.views.treatfiledata import TreatFileData
+
+import json
 
 
-def treatdata(array_data):
-    cdi_date = datetime.datetime.strptime(array_data[1], '%d/%m/%Y').strftime('%Y-%m-%d')
-    result = CDIHistory(cdi_date=cdi_date, cdi_tax_rate=float(array_data[2]))
-    return result
-
-
-def importcdi(request):
+def import_cdi(request):
     try:
-        file_url = request.url
-        url_response = urlopen(file_url)
-        file_data = csv.reader(codecs.iterdecode(url_response, 'utf-8'))
-        file_rows = list(file_data)
-        file_header = file_rows.pop(0)
-        cdi_data = *map(treatdata, file_rows),
-        CDIHistory.objects.bulk_create(cdi_data)
+        treat_file_data = TreatFileData()
+        if request.method == 'POST':
+            json_data = json.loads(request.body)
+            cdi_data = treat_file_data.get_file_data_from_url(json_data['url'])
+            created = CDIHistory.objects.bulk_create(cdi_data, 100)
+            result = {
+                'status': 'success',
+                'data': format(created)
+            }
+            return JsonResponse(result)
+        else:
+            raise PermissionDenied('use POST')
+    except PermissionDenied as e:
         result = {
-            'status': 'success',
-            'data': format(file_rows)
+            'status': 'failed',
+            'error': "Invalid Method: " + str(e)
         }
-        return JsonResponse(result)
+        return JsonResponse(result, status=400)
     except Exception as e:
         result = {
-            'status': 'false',
+            'status': 'failed',
             'error': "Unexpected error: " + str(e)
         }
-        return JsonResponse(result)
+        return JsonResponse(result, status=400)

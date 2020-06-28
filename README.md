@@ -7,5 +7,5 @@ pip install -r requirements.txt
 Para configurar as variaveis de ambiente, crie um cdbcalc/.env encima de cdbcalc/.env.example e faça os ajustes necessários
 
 Para executar os testes:
-python manage.py test calc/tests/
-
+python manage.py test calc.tests
+python manage.py test importcdi.tests

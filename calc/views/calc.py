@@ -1,25 +1,51 @@
-# Create your views here.
+import json
+
+from django.core.exceptions import PermissionDenied
 from django.http import JsonResponse
+
+from importcdi.models.cdihistory import CDIHistory
 
 
 def calc(request):
-    taxa_cdi_acumulada = 1
-    cdi = 13.88
-    taxa_cdi = round(((cdi / 100 + 1) ** (1 / 252) - 1), 8)
-    valor_investido = 1000
-    taxa_cdb = 103.5
-    for x in range(12):
-        taxa_cdi_acumulada = taxa_cdi_acumulada + (taxa_cdi * (taxa_cdb / 100))
+    try:
+        if request.method == 'POST':
+            invested_amount = 1000  # default value
+            json_data = json.loads(request.body)
+            investment_date = json_data['investmentDate']
+            current_date = json_data['currentDate']
+            if 'investedAmount' in dir(json_data):
+                invested_amount = float(json_data['investedAmount'])
+            cdb_rate = float(json_data['cdbRate'])
 
-    cdi = 13.63
-    taxa_cdi = round(((cdi / 100 + 1) ** (1 / 252) - 1), 8)
-    for x in range(17):
-        taxa_cdi_acumulada = taxa_cdi_acumulada + (taxa_cdi * (taxa_cdb / 100))
+            cdi_list = CDIHistory.objects.filter(cdi_date__range=(investment_date, current_date))
 
-    taxa_cdi_acumulada = round(taxa_cdi_acumulada, 8)
-    print(valor_investido*taxa_cdi_acumulada)
-    cdb_result = {
-        'date': "2020-06-24",
-        "unitPrice": 0
-    }
-    return JsonResponse(cdb_result)
+            accumulated_cdi_tax = 1
+            dict_index = 0
+            cdb_result = {}
+
+            for cdi in cdi_list:
+                cdi_tax = round(((cdi.cdi_tax_rate / 100 + 1) ** (1 / 252) - 1), 8)
+                accumulated_cdi_tax = accumulated_cdi_tax + (cdi_tax * (cdb_rate / 100))
+                accumulated_cdi_tax = round(accumulated_cdi_tax, 8)
+                unit_price = invested_amount * accumulated_cdi_tax
+                cdb_result[dict_index] = {
+                    'date': cdi.cdi_date,
+                    "unitPrice": round(unit_price, 2)
+                }
+                dict_index = dict_index + 1
+
+            return JsonResponse(cdb_result)
+        else:
+            raise PermissionDenied('use POST')
+    except PermissionDenied as e:
+        result = {
+            'status': 'failed',
+            'error': "Invalid Method: " + str(e)
+        }
+        return JsonResponse(result, status=400)
+    except Exception as e:
+        result = {
+            'status': 'failed',
+            'error': "Unexpected error: " + str(e)
+        }
+        return JsonResponse(result, status=400)

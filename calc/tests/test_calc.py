@@ -8,6 +8,12 @@ class TestCalc(TestCase):
         self.factory = RequestFactory()
 
     def test_calc(self):
-        request = self.factory.get('/calc')
+        data = {
+            "investmentDate": "2019-11-28",
+            "cdbRate": 103.5,
+            "currentDate": "2019-12-03"
+        }
+        request = self.factory.post('calc/', data, content_type='application/json')
         response = calc(request)
+        self.assertEqual(response.status_code, 200)
         print(response.content)

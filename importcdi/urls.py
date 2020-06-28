@@ -1,6 +1,7 @@
 from django.urls import path
-from . import views
+from importcdi.views import import_cdi
+from django.views.decorators.csrf import csrf_exempt
 
 urlpatterns = [
-    path('', views.importcdi, name='importcdi'),
+    path('import/', csrf_exempt(import_cdi), name='import_cdi'),
 ]
