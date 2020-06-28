@@ -20,3 +20,9 @@ python -c 'from django.core.management.utils import get_random_secret_key; print
 Para executar os testes:
 python manage.py test calc.tests
 python manage.py test importcdi.tests
+
+Collection do Postman, para visualização do uso:
+https://www.getpostman.com/collections/bb1847988fc473d5c8ba
+
+Ou visualize em formato web:
+
