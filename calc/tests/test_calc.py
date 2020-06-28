@@ -14,13 +14,13 @@ class TestCalc(TestCase):
             "cdbRate": 103.5,
             "currentDate": "2019-12-03"
         }
-        request = self.factory.post('calc/', data, content_type='application/json')
+        request = self.factory.post('api/v1/calc/', data, content_type='application/json')
         response = calc(request)
         self.assertEqual(response.status_code, 200)
 
     def test_calc_with_import(self):
         data_import = {'url': "https://gorila-blog.s3-us-west-2.amazonaws.com/CDI_Prices.csv"}
-        request_import = self.factory.post('cdi/import', data_import, content_type='application/json')
+        request_import = self.factory.post('api/v1/cdi/import', data_import, content_type='application/json')
         response_import = import_cdi(request_import)
 
         self.assertEqual(response_import.status_code, 200)
@@ -30,7 +30,7 @@ class TestCalc(TestCase):
             "cdbRate": 103.5,
             "currentDate": "2019-12-03"
         }
-        request = self.factory.post('calc/', data, content_type='application/json')
+        request = self.factory.post('api/v1/calc/', data, content_type='application/json')
         response = calc(request)
 
         self.assertEqual(response.status_code, 200)
