@@ -16,7 +16,7 @@ class TestCalc(TestCase):
         }
         request = self.factory.post('api/v1/calc/', data, content_type='application/json')
         response = calc(request)
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, 400)
 
     def test_calc_with_import(self):
         data_import = {'url': "https://gorila-blog.s3-us-west-2.amazonaws.com/CDI_Prices.csv"}
