@@ -1,0 +1,153 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Título -->
+    <title>Calculadora CDB</title>
+
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="{% static 'site.css' %}">
+    <link rel="stylesheet" href="sweetalert2.min.css">
+
+</head>
+
+<body>
+    <!-- Preloader -->
+    <div id="preloader">
+        <i class="circle-preloader"></i>
+        <img src="{% static 'img/core-img/pizza.png' %}" alt="">
+    </div>
+
+   <!-- ##### Header Area Start ##### -->
+    <header class="header-area">
+
+        <!-- Top Header Area -->
+        <div class="top-header-area">
+            <div class="container h-100">
+                <div class="row h-100 align-items-center justify-content-between">
+                    <div class="col-12 col-sm-6">
+                        <div class="breaking-news">
+                            <div id="breakingNewsTicker" class="ticker">
+                                <ul>
+                                    <li><a href="">Calculadora CDB</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Top Social Info -->
+                    <div class="col-12 col-sm-6">
+                        <div class="top-social-info text-right">
+                            <a href="https://github.com/vitorapaiva/cdbcalc"><i class="fa fa-github" aria-hidden="true"></i></a>
+                            <a href="https://www.linkedin.com/in/vitorapaiva/"><i class="fa fa-linkedin" aria-hidden="true"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    <!-- ##### Header Area End ##### -->
+    <section class="mt-5 mb-5">
+        <article class="container mx-auto">
+            <h1>O que é CDB?</h1>
+            Os Certificados de Depósito Bancário <b>(CDB)</b> são títulos privados representativos de depósitos a prazo feitos por pessoas físicas ou jurídicas.<br>
+            Podem emitir CDB: os bancos comerciais, múltiplos, de investimento, de desenvolvimento e a Caixa Econômica Federal. <br>
+            Consulte mais informações sobre o <a href="https://blog.toroinvestimentos.com.br/o-que-e-cdb-investimento">CDB</a> e o <a href="https://blog.nubank.com.br/cdi-o-que-e/">CDI</a>.
+        </article>
+    </section>
+    <section>
+        <div class="container">
+            <form action="#" id="form" method="post" class="mx-auto">
+                <div class="row">
+                    <div class="col">
+                        <div class="form-group">
+                            <label for="investmentDate"><b>Data Inicial</b></label>
+                            <input name="investmentDate" type="date" class="form-control" id="investmentDate">
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="form-group">
+                            <label for="currentDate"><b>Data Final</b></label>
+                            <input name="currentDate" type="date" class="form-control" id="currentDate">
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="form-group">
+                            <label for="cdbRate"><b>Percentual</b></label>
+                            <input name="cdbRate" type="text" class="form-control percent" id="cdbRate" value="100,00">
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="form-group">
+                            <label for="investedAmount"><b>Valor do Investimento</b></label>
+                            <input name="investedAmount" type="text" class="form-control money" id="investedAmount" value="1000.00">
+                        </div>
+                    </div>
+                    <div class="col">
+                        <button type="submit" class="btn btn-lg btn-info">Calcular</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </section>
+    <section>
+        <div class="container" id="calculated_data">
+            <div class="row">
+            </div>
+        </div>
+    </section>
+
+    <!-- ##### Footer Area Start ##### -->
+    <footer class="footer-area">
+        <div class="container h-100">
+            <div class="row h-100">
+                <div class="col-12 h-100 d-flex flex-wrap align-items-center justify-content-between">
+                    <!-- Footer Social Info -->
+                    <div class="footer-social-info text-right">
+                        <a href="https://github.com/vitorapaiva/cdbcalc"><i class="fa fa-github" aria-hidden="true"></i></a>
+                        <a href="https://www.linkedin.com/in/vitorapaiva/"><i class="fa fa-linkedin" aria-hidden="true"></i></a>
+                    </div>
+                    <div class="footer-logo">
+                        <a href="https://github.com/vitorapaiva/">Feito por: Vitor Paiva</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <!-- ##### Footer Area Start ##### -->
+
+    <!-- ##### All Javascript Files ##### -->
+    <!-- jQuery-2.2.4 js -->
+    <script src="{% static 'js/jquery/jquery-2.2.4.min.js' %}"></script>
+    <!-- Popper js -->
+    <script src="{% static 'js/bootstrap/popper.min.js' %}"></script>
+    <!-- Bootstrap js -->
+    <script src="{% static 'js/bootstrap/bootstrap.min.js' %}"></script>
+    <!-- All Plugins js -->
+    <script src="{% static 'js/plugins/plugins.js' %}"></script>
+    <!-- Active js -->
+    <script src="{% static 'js/active.js' %}"></script>
+    <!-- Calc Js -->
+     <script src="{% static 'js/calc/calc.js' %}"></script>
+    <!-- Swal2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+    <script>
+        $(document).ready(function(){
+          $('.money').mask('000.000.000.000.000,00', {reverse: true});
+          $('.percent').mask('##0,00%', {reverse: true});
+        });
+
+        $( "#form" ).submit(function( event ) {
+          returnCalculatedAmount();
+          event.preventDefault();
+        });
+    </script>
+</body>
+
+</html>
