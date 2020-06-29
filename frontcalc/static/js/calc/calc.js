@@ -10,7 +10,7 @@ function getCalculatedAmount(investmentDate, currentDate, cdbRate, investedAmoun
         }, "json").fail(function( jqXHR, textStatus, errorThrown ) {
             parsed=$.parseJSON(jqXHR.responseText);
             if(parsed.error){
-                reject(new Error(parsed.error));
+                reject(parsed.error);
             }
         });
     });
@@ -31,8 +31,8 @@ async function returnCalculatedAmount() {
     }
     catch(error){
         Swal.fire({
-          icon: 'error',
-          title: 'Oops...',
+          icon: 'warning',
+          title: 'Atenção',
           text: error
         })
     }
