@@ -1,11 +1,10 @@
 import json
-from datetime import datetime, timedelta, date
+from datetime import datetime, timedelta
 
 from django.core.exceptions import PermissionDenied
 from django.http import JsonResponse
 
 from importcdi.models.cdihistory import CDIHistory
-
 
 def validate_request_date(start_date, end_date):
     start_date = datetime.strptime(start_date, '%Y-%m-%d')
@@ -72,7 +71,6 @@ def calc(request):
             cdb_rate = float(json_data['cdbRate'])
 
             cdi_list = get_cdi_tax_by_date(investment_date, current_date)
-
             cdb_daily = calculate_accumulated_cdi(cdi_list, invested_amount, cdb_rate)
 
             cdb_result = []
