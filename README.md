@@ -1,6 +1,14 @@
 # Calculadora CDB
 Serviço para calcular o valor de um CDB pós fixado indexado ao CDI em uma data específica e uma página web em que esses dados calculados serão expostos.
 
+# Requisitos
+* python-3.8.0
+* Django-3.0.7
+* django-environ-0.4.5
+* gunicorn-20.0.4
+* mysqlclient-1.4.6
+* whitenoise-5.1.0
+
 ## Para instalar os requisitos basicos
 * pip install -r requirements.txt
 
