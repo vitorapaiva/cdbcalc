@@ -6,6 +6,7 @@ from django.http import JsonResponse
 
 from importcdi.models.cdihistory import CDIHistory
 
+
 def validate_request_date(start_date, end_date):
     start_date = datetime.strptime(start_date, '%Y-%m-%d')
     end_date = datetime.strptime(end_date, '%Y-%m-%d')
@@ -29,11 +30,12 @@ def calculate_accumulated_cdi(cdi_list, invested_amount, cdb_rate):
     accumulated_cdi_tax = 1
     if len(cdi_list) == 0:
         raise Exception('Não há dados disponiveis para essa busca')
-    for cdi in cdi_list:
+    cdl_as_list = list(cdi_list)
+    cdl_as_list.pop()
+    for cdi in cdl_as_list:
         cdi_tax = round(((cdi.cdi_tax_rate / 100 + 1) ** (1 / 252) - 1), 8)
-        accumulated_cdi_tax = accumulated_cdi_tax + (cdi_tax * (cdb_rate / 100))
-        accumulated_cdi_tax = round(accumulated_cdi_tax, 8)
-        unit_price = invested_amount * accumulated_cdi_tax
+        accumulated_cdi_tax = (1 + cdi_tax * cdb_rate / 100) * accumulated_cdi_tax
+        unit_price = invested_amount * round(accumulated_cdi_tax, 16)
         date = cdi.cdi_date.strftime('%Y-%m-%d')
         cdb_daily[date] = {
             'date': date,

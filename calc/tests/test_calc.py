@@ -26,9 +26,9 @@ class TestCalc(TestCase):
         self.assertEqual(response_import.status_code, 200)
 
         data = {
-            "investmentDate": "2019-11-28",
+            "investmentDate": "2016-11-14",
             "cdbRate": 103.5,
-            "currentDate": "2019-12-03"
+            "currentDate": "2016-12-26"
         }
         request = self.factory.post('api/v1/calc/', data, content_type='application/json')
         response = calc(request)

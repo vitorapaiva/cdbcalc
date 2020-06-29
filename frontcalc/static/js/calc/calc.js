@@ -24,8 +24,9 @@ async function returnCalculatedAmount() {
         let investedAmount = $("input[name='investedAmount']").val();
         let divCalculatedData = $("#calculated_data");
         let calculatedData = await getCalculatedAmount(investmentDate, currentDate, cdbRate, investedAmount);
-        var data = new Date(calculatedData.data[0].date);
-        let result="<div class='col alert alert-success'><b>Data:</b> <span>"+data.toLocaleDateString()+"</span> <b>Valor Calculado:</b> <span>R$"+calculatedData.data[0].unitPrice.toLocaleString()+"</span></div>";
+        let data = new Date(calculatedData.data[0].date);
+        let data_adjusted = new Date( data.getTime() + Math.abs(data.getTimezoneOffset()*60000));
+        let result="<div class='col alert alert-success'><b>Data:</b> <span>"+data_adjusted.toLocaleDateString()+"</span> <b>Valor Calculado:</b> <span>R$"+calculatedData.data[0].unitPrice.toLocaleString()+"</span></div>";
         divCalculatedData.append(result);
     }
     catch(error){
