@@ -33,3 +33,20 @@ class TestCalc(TestCase):
         request = self.factory.post('api/v1/calc/', data, content_type='application/json')
         response = calc(request)
         self.assertEqual(response.status_code, 200)
+
+    def test_calc_with_import_and_invested_amount(self):
+        data_import = {'url': "http://portalxibe.com.br/CDI_Prices.csv"}
+        request_import = self.factory.post('api/v1/cdi/import', data_import, content_type='application/json')
+        response_import = import_cdi(request_import)
+
+        self.assertEqual(response_import.status_code, 200)
+
+        data = {
+            "investmentDate": "2016-11-14",
+            "cdbRate": 103.5,
+            "currentDate": "2016-12-26",
+            "investedAmount": 2000.00
+        }
+        request = self.factory.post('api/v1/calc/', data, content_type='application/json')
+        response = calc(request)
+        self.assertEqual(response.status_code, 200)

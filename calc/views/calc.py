@@ -62,9 +62,8 @@ def calc(request):
     try:
         if request.method == 'POST':
             json_data = json.loads(request.body)
-
             invested_amount = 1000  # default value
-            if 'investedAmount' in dir(json_data):
+            if 'investedAmount' in json_data:
                 invested_amount = float(json_data['investedAmount'])
 
             investment_date = json_data['investmentDate']
